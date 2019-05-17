@@ -1,6 +1,6 @@
 <?php
 
-class TestCase
+class TestCase extends Orchestra\Testbench\TestCase
 {
-
+    //
 }

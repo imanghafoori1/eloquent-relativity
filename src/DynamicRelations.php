@@ -44,6 +44,8 @@ trait DynamicRelations
      * @param $relationName
      * @param null $foreignKey
      * @param null $localKey
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public static function has_many($relationName = null, string $related, $foreignKey = null, $localKey = null)
     {
@@ -141,5 +143,20 @@ trait DynamicRelations
         static::registerModelEvent('booting', function ($model) use ($relation) {
             $model->with = $model->with + $relation;
         });
+    }
+
+    public static function oneToManyWithReverse(string $class, $relationName = null, $foreignKey = null, $localKey = null)
+    {
+        self::defineManyToOne($class, $relationName, $foreignKey, $localKey);
+        self::has_many($class, $relationName, $foreignKey, $localKey);
+    }
+
+    public static function hasManyToMany($relatedClass, $table = null, $foreignPivotKey = null, $relatedPivotKey = null,
+        $parentKey = null, $relatedKey = null): void
+    {
+        $relation = $relatedClass[0];
+        $relatedClass = $relatedClass[1];
+        $params = [$relatedClass, $table, $foreignPivotKey, $relatedPivotKey, $parentKey, $relatedKey, $relation];
+        static::belongs_to_many(static::class, $params, $relation);
     }
 }
