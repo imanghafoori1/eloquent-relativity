@@ -1,0 +1,38 @@
+{
+    "name": "imanghafoori/eloquent-relativity",
+    "description": "A way to truely decouple eloquent models.",
+    "keywords": ["laravel", "laravel-eloquent", "PHP","laravel5"],
+    "license": "MIT",
+    "homepage": "https://github.com/imanghafoori1/laravel-relativity",
+    "authors": [
+        {
+            "name": "Iman Ghafoori",
+            "email": "imanghafoori1@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.3"
+    },
+    "autoload-dev": {
+        "classmap": ["tests/TestCase.php"]
+    },
+    "require-dev": {
+        "orchestra/testbench": "~3.0",
+        "mockery/mockery": "^0.9.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Imanghafoori\\Relativity\\": "src"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Imanghafoori\\Relativity\\RelativityServiceProvider"
+            ]
+        }
+    }
+}
