@@ -28,16 +28,15 @@ Now we want to add a `comment` module, on the top of `user` and `blog` module.
 In a truely modular system when you add the `comments`, you should NOT go and touch the code within the `users` or `blog` module.
 (Remember the `open-closed` principle in `SOLID` ?!)
 
-Imagine you are in a team and each member is working on a seprate module.
+Imagine you are in a team and each member is working on a seperate module.
 
 `Blog` module is not yours. your team mate is responsible for it and is allowed to code on it.
 
-But when you want to start to define the eloquent relations between `Comment` and `User` and `Article` models. you immidiately realize that you have to put code on the eloquent models to define the inverse of the relationships. Crap ! 
+But when you want to start to define the eloquent relations between `Comment` and `User` and `Article` models, you immediately realize that you have to put code on the eloquent models of other modules to define the inverse of the relationships. Crap ! 
 
-We have to touch the code of both `Blog` and `User` module.
+We have to touch the code of both `Blog` and `User` module when add a new `comment` module.
 
-for example : You have to open `User.php` and define the
-
+For example : You have to open `User.php` and define the
 ```php
 public function comments() {
     return $this->hasMany(Comment::class); 
@@ -46,7 +45,7 @@ public function comments() {
 
 So what to do ?!
 
-How can `Comment` be introduced to the system without touching the other modules ?!
+How can `Comment` be introduced to the system without modifying the other modules ?! (@_@)
 
 
 ### Install laravel-relativity : (the most painful step)
@@ -55,13 +54,13 @@ How can `Comment` be introduced to the system without touching the other modules
 composer require imanghafoori/laravel-relativity  (and take a coffee...)
 ```
 
-Now the installtion finished, you have to make your models "relative" ! 
+Now the installtion finished, you first have to make your models "relative" !!!
 
 By using the `Imanghafoori\Relativity\DynamicRelations` traits on your eloquent models.
 
 So the `User`, `Article`, `Comment` will have to have this trait one them.
 
-Now comes the magic part :
+Now comes the sweet part :
 
 within the `CommentsServiceProvider.php`
 
@@ -73,7 +72,7 @@ class CommentsServiceProvider
         User::has_many('comments', Comment::class);     // instead of defining method on the User class.
         Article::has_many('comments',  Comment::class);
         
-        Comment::belongs_to('author', User::class);
+        Comment::belongs_to('author', User::class);       // inverse of relations
         Comment::belongs_to('article',  Article::class);
     }
 
@@ -99,7 +98,8 @@ public function comments() {
 You have defined the method remotely from your new module at run-time: 
 
  ```php
- User::has_many('comments', Comment::class); ```
+ User::has_many('comments', Comment::class);
+ ```
 
 ### extra features :
 
@@ -122,7 +122,7 @@ User extends Model {
 }
 ```
 
-instead you can:
+instead you can :
 
 ```php
 User::forceEagerLoading('comments');
