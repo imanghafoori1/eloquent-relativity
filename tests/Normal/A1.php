@@ -27,4 +27,9 @@ class A1 extends Model
     {
         return $this->belongsToMany(A2::class, 'pivot', 'a1_id', 'a2_id', null, 'none_id');
     }
+
+    public function comments()
+    {
+        return $this->morphMany(Comment::class, 'commented', 'morphed_type', 'morphed_id');
+    }
 }
