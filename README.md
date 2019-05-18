@@ -40,3 +40,81 @@ for example : You have to open `User.php` and define the
 So what to do ?!
 
 How can `Comment` be introduced to the system without touching the other modules ?!
+
+
+### Install laravel-relativity : (the most painful step)
+
+```
+composer require imanghafoori/laravel-relativity  (and take a coffee...)
+```
+
+Now the installtion finished, you have to make your models "relative" ! 
+
+By using the `Imanghafoori\Relativity\DynamicRelations` traits on your eloquent models.
+
+So the `User`, `Article`, `Comment` will have to have this trait one them.
+
+Now comes the magic part :
+
+within the `CommentsServiceProvider.php`
+
+```
+class CommentsServiceProvider 
+{
+    public function register () {
+        
+        User::has_many('comments', Comment::class);     // instead of defining method on the User class.
+        Article::has_many('comments',  Comment::class);
+        
+        Comment::belongs_to('author', User::class);
+        Comment::belongs_to('article',  Article::class);
+    }
+
+}
+```
+Now you can do these queries :
+
+```php
+User::find(1)->comments;
+or 
+User::find(1)->comments()->count();
+```
+
+So instead of going to `User` model and define a method there.
+
+`public function comments() {
+    return $this->hasMany(Comment::class); 
+}`
+
+You have defined the method remotely from your new module at run-time: 
+
+ ```User::has_many('comments', Comment::class); ```
+
+### extra features :
+
+
+sometimes you need to call extra methods on the relations.
+
+```
+User::has_many('comments', Comment::class)->orderBy('id', 'asc');
+```
+
+All the methods are available to you.
+
+- Enforce eager-loading
+
+On reqular eloquent models you may define the
+
+```
+User extends Model {
+    protected $with = ['comments'];
+}
+```
+
+instead you can:
+
+```
+User::forceEagerLoading('comments');
+```
+
+remember this should be in the `boot` method of your Service Provider not the `register` method.
