@@ -10,6 +10,13 @@ use Imanghafoori\Relativity\Tests\Normal\A3 as A3N;
 use Imanghafoori\Relativity\Tests\A1;
 use Imanghafoori\Relativity\Tests\A3;
 use Imanghafoori\Relativity\Tests\Normal\Comment;
+use Imanghafoori\Relativity\Tests\Normal\Post as NormalPost;
+use Imanghafoori\Relativity\Tests\Normal\Tag as NormalTag;
+use Imanghafoori\Relativity\Tests\Normal\Video as NormalVideo;
+
+use Imanghafoori\Relativity\Tests\Post;
+use Imanghafoori\Relativity\Tests\Tag;
+use Imanghafoori\Relativity\Tests\Video;
 
 class SampleTest extends TestCase
 {
@@ -70,6 +77,49 @@ class SampleTest extends TestCase
         $this->assertEquals(3, $a2->comments->count());
 
         $this->assertEquals($a1->comments()->toSql(), $a2->comments()->toSql());
+    }
+
+    public function test_morph_to_many()
+    {
+        $this->MigrateMorphToMany();
+        Post::morph_to_many('tags', Tag::class, 'taggable');
+        Tag::morphed_by_many('posts', Post::class, 'taggable');
+        Tag::morphed_by_many('videos', Video::class, 'taggable');
+
+        \DB::table('posts')->insert([['name' => 'post1'], ['name' => 'post2'], ['name' => 'post3'],]);
+        \DB::table('videos')->insert([['name' => 'video1'], ['name' => 'video2'], ['name' => 'video3'],]);
+
+        Post::find(1)->tags()->create(['name' => 'tag_1']);
+        Post::find(1)->tags()->create(['name' => 'tag_2']);
+        Post::find(1)->tags()->create(['name' => 'tag_3']);
+        $this->assertEquals(3, Post::find(1)->tags()->count());
+        $this->assertEquals(3, Post::find(1)->tags->count());
+    }
+
+    private function MigrateMorphToMany() {
+
+        Schema::create('posts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 20);
+            $table->timestamps();
+        });
+        Schema::create('videos', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 20);
+            $table->timestamps();
+        });
+        Schema::create('tags', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 20);
+            $table->timestamps();
+        });
+        Schema::create('taggables', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('tag_id');
+            $table->unsignedInteger('taggable_id');
+            $table->string('taggable_type', 20);
+
+        });
     }
 
     public function test_has_one()

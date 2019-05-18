@@ -39,6 +39,13 @@ trait DynamicRelations
         return call_user_func_array($macro, $parameters);
     }
 
+    public static function morphed_by_many($relationName, $related, $name, $table = null, $foreignPivotKey = null,
+        $relatedPivotKey = null, $parentKey = null, $relatedKey = null)
+    {
+        return new AbstractRelation(['morphedByMany', static::class, $relationName, [$related, $name, $table, $foreignPivotKey,
+            $relatedPivotKey, $parentKey, $relatedKey, $relationName]]);
+    }
+
     /**
      * @param string $related
      * @param $relationName
@@ -97,7 +104,7 @@ trait DynamicRelations
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function morph_to_many($relationName, $related, $name, $table = null, $foreignPivotKey = null,
+    public static function morph_to_many($relationName, $related, $name, $table = null, $foreignPivotKey = null,
         $relatedPivotKey = null, $parentKey = null, $relatedKey = null)
     {
         $params = [$related, $name, $table, $foreignPivotKey,
