@@ -11,9 +11,4 @@ class Comment extends Model
     public $timestamps = false;
 
     protected $table = 'poly_morph_comments';
-  /*
-    public function favorites()
-    {
-        return $this->morphMany(Favorite::class, 'favorited');
-    }*/
 }
