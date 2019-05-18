@@ -2,9 +2,14 @@
 
 This allows you to decouple your eloquent models from one another.
 
+[![Build Status](https://travis-ci.org/imanghafoori1/eloquent-relativity.svg?branch=master)](https://travis-ci.org/imanghafoori1/eloquent-relativity)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/imanghafoori1/eloquent-relativity/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/imanghafoori1/eloquent-relativity/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/imanghafoori1/eloquent-relativity/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/imanghafoori1/eloquent-relativity/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/imanghafoori/eloquent-relativity/v/stable)](https://packagist.org/packages/imanghafoori/eloquent-relativity)
+
 ### A problem which stops true modularity :
 
-Let's face it, imagine you have a blog application.
+Let's face it, imagine you have a modular blog application.
 
 Then, you want to add a `commenting` feature to it, so that users can comment on your articles.
 
@@ -82,20 +87,22 @@ User::find(1)->comments()->count();
 
 So instead of going to `User` model and define a method there.
 
-`public function comments() {
+```php
+public function comments() {
     return $this->hasMany(Comment::class); 
-}`
+}```
 
 You have defined the method remotely from your new module at run-time: 
 
- ```User::has_many('comments', Comment::class); ```
+ ```php
+ User::has_many('comments', Comment::class); ```
 
 ### extra features :
 
 
 sometimes you need to call extra methods on the relations.
 
-```
+```php
 User::has_many('comments', Comment::class)->orderBy('id', 'asc');
 ```
 
@@ -105,7 +112,7 @@ All the methods are available to you.
 
 On reqular eloquent models you may define the
 
-```
+```php
 User extends Model {
     protected $with = ['comments'];
 }
@@ -113,7 +120,7 @@ User extends Model {
 
 instead you can:
 
-```
+```php
 User::forceEagerLoading('comments');
 ```
 
