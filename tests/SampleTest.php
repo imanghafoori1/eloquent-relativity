@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Imanghafoori\Relativity\Tests\A2;
+use Imanghafoori\Relativity\Tests\A4;
 use Imanghafoori\Relativity\Tests\Normal\A1 as A1N;
 use Imanghafoori\Relativity\Tests\Normal\A2 as A2N;
 use Imanghafoori\Relativity\Tests\Normal\A3 as A3N;
@@ -71,6 +72,24 @@ class SampleTest extends TestCase
         $this->assertEquals($a1->comments()->toSql(), $a2->comments()->toSql());
     }
 
+    public function test_has_one()
+    {
+        $this->migrateAndSeed();
+        A1::has_one('a4', A4::class);
+
+        $this->assertEquals(1, A1::find(1)->a4->id);
+        $this->assertEquals(2, A1::find(2)->a4->id);
+        $this->assertEquals(3, A1::find(3)->a4->id);
+
+        $this->assertEquals(1, A1::find(1)->a4()->first()->id);
+        $this->assertEquals(2, A1::find(2)->a4()->first()->id);
+        $this->assertEquals(3, A1::find(3)->a4()->first()->id);
+
+        $this->assertEquals(A1N::find(1)->a4()->toSql(), A1::find(1)->a4()->toSql());
+        $this->assertEquals(A1N::find(2)->a4()->toSql(), A1::find(2)->a4()->toSql());
+        $this->assertEquals(A1N::find(3)->a4()->toSql(), A1::find(3)->a4()->toSql());
+    }
+
     private function migrateAndSeed(): void
     {
         Schema::defaultStringLength(191);
@@ -112,6 +131,17 @@ class SampleTest extends TestCase
             ['name' => 'row2', 'a1_id' => 2, 'a1_d_id' => 2, 'a2_id' => 3],
             ['name' => 'row3', 'a1_id' => 3, 'a1_d_id' => 3, 'a2_id' => 1],
             ['name' => 'row3', 'a1_id' => 3, 'a1_d_id' => 3, 'a2_id' => 2],
+        ]);
+        Schema::create('a4', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 20);
+            $table->integer('a1_id');
+            $table->timestamps();
+        });
+        \DB::table('a4')->insert([
+            ['name' => 'row 1', 'a1_id' => 1],
+            ['name' => 'row 2', 'a1_id' => 2],
+            ['name' => 'row 3', 'a1_id' => 3],
         ]);
         Schema::create('pivot', function (Blueprint $table) {
             $table->integer('a1_id')->unsigned();

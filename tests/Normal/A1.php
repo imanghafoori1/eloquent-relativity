@@ -32,4 +32,9 @@ class A1 extends Model
     {
         return $this->morphMany(Comment::class, 'commented', 'morphed_type', 'morphed_id');
     }
+
+    public function a4()
+    {
+        return $this->hasOne(A4::class);
+    }
 }
