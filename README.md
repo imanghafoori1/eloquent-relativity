@@ -2,7 +2,7 @@
 
 This allows you to decouple your eloquent models from one another, so it you are going to design a modular laravel application, it would be truely modular.
 
-## A problem stops true modularity :
+## A problem which stops true modularity :
 
 let face it, imaging you have a blog application.
 
