@@ -13,13 +13,13 @@ Let's face it, imagine you have a modular blog application.
 
 Then, you want to add a `commenting` feature to it, so that users can comment on your articles.
 
-In a modular structure, you have 2 modules (`user` module and `blog` module) and you will add the a new module for `comments`
+In a modular structure, you have 2 modules (`user` module and `blog` module) and you will add a new module for `comments`
 
 ### let's analyze dependencies and couplings :
 
 Here the `blog` module "knows" and "depends" upon the `user` module.
 
-but the `user` module should not know or care about the `blog` module. The `blog` is a `plug-in` on the top of the `user` module.
+But the `user` module should not know or care about the `blog` module. The `blog` is a `plug-in` on the top of the `user` module.
 
 Now we want to add a `comment` module, on the top of `user` and `blog` module.
 
