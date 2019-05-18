@@ -31,8 +31,12 @@ But when you want to start to define the eloquent relations between `Comment` an
 
 We have to touch the code of both `Blog` and `User` module.
 
-for example : You have to open `User.php` and define the `public function comments() { return $this->hasMany(Comment::class); }`
+for example : You have to open `User.php` and define the
+
+`public function comments() {
+    return $this->hasMany(Comment::class); 
+}`
 
 So what to do ?!
 
-How can `Comment` be introduced to the system without the user realizing it ?!
+How can `Comment` be introduced to the system without touching the other modules ?!
