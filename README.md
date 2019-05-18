@@ -38,9 +38,11 @@ We have to touch the code of both `Blog` and `User` module.
 
 for example : You have to open `User.php` and define the
 
-`public function comments() {
+```php
+public function comments() {
     return $this->hasMany(Comment::class); 
-}`
+}
+```
 
 So what to do ?!
 
@@ -63,7 +65,7 @@ Now comes the magic part :
 
 within the `CommentsServiceProvider.php`
 
-```
+```php
 class CommentsServiceProvider 
 {
     public function register () {
@@ -76,7 +78,9 @@ class CommentsServiceProvider
     }
 
 }
+
 ```
+
 Now you can do these queries :
 
 ```php
@@ -85,12 +89,12 @@ or
 User::find(1)->comments()->count();
 ```
 
-So instead of going to `User` model and define a method there.
-
+So instead of going to `User` model and define a method there...
 ```php
 public function comments() {
     return $this->hasMany(Comment::class); 
-}```
+}
+```
 
 You have defined the method remotely from your new module at run-time: 
 
