@@ -22,6 +22,7 @@ class A1 extends Model
     {
         return $this->hasMany(A3::class, 'a1_d_id')->orderByDesc('id');
     }
+
     public function a2()
     {
         return $this->belongsToMany(A2::class, 'pivot', 'a1_id', 'a2_id', null, 'none_id');
