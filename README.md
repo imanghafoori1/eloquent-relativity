@@ -51,7 +51,7 @@ How can `Comment` be introduced to the system without modifying the other module
 ### Install laravel-relativity : (the most painful step)
 
 ```
-composer require imanghafoori/laravel-relativity  (and take a coffee...)
+composer require imanghafoori/eloquent-relativity   (and take a coffee...)
 ```
 
 Now the installtion finished, you first have to make your models "relative" !!!
