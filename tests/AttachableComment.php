@@ -5,9 +5,12 @@ namespace Imanghafoori\Relativity\Tests;
 use Illuminate\Database\Eloquent\Model;
 use Imanghafoori\Relativity\DynamicRelations;
 
-class A1 extends Model
+class AttachableComment extends Model
 {
     use DynamicRelations;
 
-    protected $table = 'a1';
+    protected $table = 'poly_morph_comments';
+
+    protected $guarded = [];
+
 }
