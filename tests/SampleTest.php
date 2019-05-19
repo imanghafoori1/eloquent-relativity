@@ -88,17 +88,28 @@ class SampleTest extends TestCase
 
     public function test_morph_to_many()
     {
-        $this->MigrateMorphToMany();
+        $this->migrateMorphToMany();
+
         Post::morph_to_many('tags', Tag::class, 'taggable');
         Tag::morphed_by_many('posts', Post::class, 'taggable');
         Tag::morphed_by_many('videos', Video::class, 'taggable');
 
-        \DB::table('posts')->insert([['name' => 'post1'], ['name' => 'post2'], ['name' => 'post3'],]);
-        \DB::table('videos')->insert([['name' => 'video1'], ['name' => 'video2'], ['name' => 'video3'],]);
+        \DB::table('posts')->insert([['name' => 'post_1'], ['name' => 'post_2'], ['name' => 'post_3']]);
+        \DB::table('videos')->insert([['name' => 'video_1'], ['name' => 'video_2'], ['name' => 'video_3']]);
 
         Post::find(1)->tags()->create(['name' => 'tag_1']);
         Post::find(1)->tags()->create(['name' => 'tag_2']);
         Post::find(1)->tags()->create(['name' => 'tag_3']);
+
+        NormalPost::find(1)->tags()->create(['name' => 'tag_1']);
+        NormalPost::find(1)->tags()->create(['name' => 'tag_2']);
+        NormalPost::find(1)->tags()->create(['name' => 'tag_3']);
+
+        $this->assertEquals(Post::find(1)->tags()->toSql(), NormalPost::find(1)->tags()->toSql());
+        $this->assertEquals(NormalTag::find(1)->posts()->toSql(), Tag::find(1)->posts()->toSql());
+
+        $this->assertEquals(3, NormalPost::find(1)->tags()->count());
+        $this->assertEquals(3, NormalPost::find(1)->tags->count());
 
         $this->assertEquals(3, Post::find(1)->tags()->count());
         $this->assertEquals(3, Post::find(1)->tags->count());
@@ -107,7 +118,7 @@ class SampleTest extends TestCase
         $this->assertEquals(1, Tag::find(1)->posts()->first()->id);
     }
 
-    private function MigrateMorphToMany() {
+    private function migrateMorphToMany() {
 
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
