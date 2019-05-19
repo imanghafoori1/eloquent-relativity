@@ -59,7 +59,7 @@ trait BaseEloquentOverrides
         // If the "attribute" exists as a method on the model, we will just assume
         // it is a relationship and will load and return results from the query
         // and hydrate the relationship's value on the "relationships" array.
-        if (method_exists($this, $key) or isset(static::$macros[$key])) {
+        if (method_exists($this, $key) or isset(static::$dynamicRelations[$key])) {
             return $this->getRelationshipFromMethod($key);
         }
     }
@@ -74,6 +74,8 @@ trait BaseEloquentOverrides
      * @param  string  $relatedPivotKey
      * @param  string  $parentKey
      * @param  string  $relatedKey
+     * @param  string  $caller
+     *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function morphedByMany($related, $name, $table = null, $foreignPivotKey = null,

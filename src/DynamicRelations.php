@@ -2,18 +2,17 @@
 
 namespace Imanghafoori\Relativity;
 
-use Closure;
 use Illuminate\Support\Str;
 
 trait DynamicRelations
 {
     use BaseEloquentOverrides;
 
-    protected static $macros = [];
+    protected static $dynamicRelations = [];
 
-    public static function macro($name, $macro)
+    public static function defineRelation($name, $macro)
     {
-        static::$macros[$name] = $macro;
+        static::$dynamicRelations[$name] = $macro;
     }
 
     /**
@@ -27,16 +26,12 @@ trait DynamicRelations
      */
     public function __call($method, $parameters)
     {
-        $macro = static::$macros[$method] ?? null;
-        if (! $macro) {
+        $dynamicRelation = static::$dynamicRelations[$method] ?? null;
+        if (! $dynamicRelation) {
             return parent::__call($method, $parameters);
         }
 
-        if ($macro instanceof Closure) {
-            $macro = $macro->bindTo($this, static::class);
-        }
-
-        return call_user_func_array($macro, $parameters);
+        return call_user_func_array($dynamicRelation->bindTo($this, static::class), $parameters);
     }
 
     public static function morphed_by_many($relationName, $related, $name, $table = null, $foreignPivotKey = null,
@@ -105,10 +100,11 @@ trait DynamicRelations
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public static function morph_to_many($relationName, $related, $name, $table = null, $foreignPivotKey = null,
-        $relatedPivotKey = null, $parentKey = null, $relatedKey = null)
+        $relatedPivotKey = null, $parentKey = null,
+        $relatedKey = null, $inverse = false)
     {
         $params = [$related, $name, $table, $foreignPivotKey,
-            $relatedPivotKey, $parentKey, $relatedKey, $relationName];
+            $relatedPivotKey, $parentKey, $relatedKey, $inverse, $relationName];
 
         return new AbstractRelation(['morphToMany', static::class, $relationName, $params]);
     }

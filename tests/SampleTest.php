@@ -86,9 +86,6 @@ class SampleTest extends TestCase
         $this->assertEquals($a1->poly_comments()->toSql(), $a2->poly_comments()->toSql());
     }
 
-    /**
-     * @covers \Imanghafoori\Relativity\BaseEloquentOverrides
-     */
     public function test_morph_to_many()
     {
         $this->MigrateMorphToMany();
@@ -102,8 +99,12 @@ class SampleTest extends TestCase
         Post::find(1)->tags()->create(['name' => 'tag_1']);
         Post::find(1)->tags()->create(['name' => 'tag_2']);
         Post::find(1)->tags()->create(['name' => 'tag_3']);
+
         $this->assertEquals(3, Post::find(1)->tags()->count());
         $this->assertEquals(3, Post::find(1)->tags->count());
+
+        $this->assertEquals(1, Tag::find(1)->posts->first()->id);
+        $this->assertEquals(1, Tag::find(1)->posts()->first()->id);
     }
 
     private function MigrateMorphToMany() {
