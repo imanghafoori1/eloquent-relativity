@@ -1,0 +1,176 @@
+<?php
+
+namespace Imanghafoori\Relativity\Tests;
+
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Imanghafoori\Relativity\Tests\Normal\{Post as NormalPost, Tag as NormalTag, User as UserN};
+use Imanghafoori\Relativity\Tests\RelativeModels\{AttachableComment, Post, Tag, User, Video};
+
+class PolymorphicRelationsTest extends TestCase
+{
+    public function test_morph_many()
+    {
+        \Illuminate\Database\Eloquent\Relations\Relation::morphMap([
+            'user2' => "Imanghafoori\Relativity\Tests\Normal\User",
+            'user1' => User::class,
+        ]);
+
+        $this->migrateAndSeed();
+
+        User::morph_many('poly_comments', AttachableComment::class, 'commented', 'morphed_type', 'morphed_id');
+
+        $a1 = User::find(1);
+        $a1->poly_comments()->create(['body' => '1', 'user_id' => 1]);
+        $a1->poly_comments()->create(['body' => '2', 'user_id' => 2]);
+        $a1->poly_comments()->create(['body' => '3', 'user_id' => 3]);
+
+        $this->assertEquals(3, \DB::table('poly_morph_comments')->where("morphed_type", 'user1')->count());
+        $this->assertEquals(3, $a1->poly_comments()->count());
+        $this->assertEquals(3, $a1->poly_comments->count());
+
+        $a2 = UserN::find(1);
+        $a2->poly_comments()->create(['body' => '1', 'user_id' => 1]);
+        $a2->poly_comments()->create(['body' => '2', 'user_id' => 2]);
+        $a2->poly_comments()->create(['body' => '3', 'user_id' => 3]);
+
+        $this->assertEquals(3, \DB::table('poly_morph_comments')->where("morphed_type", 'user2')->count());
+        $this->assertEquals(3, $a2->poly_comments()->count());
+        $this->assertEquals(3, $a2->poly_comments->count());
+
+        $this->assertEquals($a1->poly_comments()->toSql(), $a2->poly_comments()->toSql());
+    }
+
+    public function test_morph_to_many()
+    {
+        $this->migrateMorphToMany();
+
+        Post::morph_to_many('tags', Tag::class, 'taggable');
+        Tag::morphed_by_many('posts', Post::class, 'taggable');
+        Tag::morphed_by_many('videos', Video::class, 'taggable');
+
+        \DB::table('posts')->insert([['name' => 'post_1'], ['name' => 'post_2'], ['name' => 'post_3']]);
+        \DB::table('videos')->insert([['name' => 'video_1'], ['name' => 'video_2'], ['name' => 'video_3']]);
+
+        Post::find(1)->tags()->create(['name' => 'tag_1']);
+        Post::find(1)->tags()->create(['name' => 'tag_2']);
+        Post::find(1)->tags()->create(['name' => 'tag_3']);
+
+        NormalPost::find(1)->tags()->create(['name' => 'tag_1']);
+        NormalPost::find(1)->tags()->create(['name' => 'tag_2']);
+        NormalPost::find(1)->tags()->create(['name' => 'tag_3']);
+
+        $this->assertEquals(Post::find(1)->tags()->toSql(), NormalPost::find(1)->tags()->toSql());
+        $this->assertEquals(NormalTag::find(1)->posts()->toSql(), Tag::find(1)->posts()->toSql());
+
+        $this->assertEquals(3, NormalPost::find(1)->tags()->count());
+        $this->assertEquals(3, NormalPost::find(1)->tags->count());
+
+        $this->assertEquals(3, Post::find(1)->tags()->count());
+        $this->assertEquals(3, Post::find(1)->tags->count());
+
+        $this->assertEquals(1, Tag::find(1)->posts->first()->id);
+        $this->assertEquals(1, Tag::find(1)->posts()->first()->id);
+    }
+
+    private function migrateMorphToMany() {
+
+        Schema::create('posts', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 20);
+            $table->timestamps();
+        });
+        Schema::create('videos', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 20);
+            $table->timestamps();
+        });
+        Schema::create('tags', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 20);
+            $table->timestamps();
+        });
+        Schema::create('taggables', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('tag_id');
+            $table->unsignedInteger('taggable_id');
+            $table->string('taggable_type', 20);
+
+        });
+    }
+
+    private function migrateAndSeed()
+    {
+        Schema::defaultStringLength(191);
+        Schema::dropAllTables();
+
+        Schema::create('a1', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 20);
+            $table->timestamps();
+        });
+        \DB::table('a1')->insert([
+            ['name' => 'row1'],
+            ['name' => 'row2'],
+            ['name' => 'row3'],
+        ]);
+        Schema::create('a2', function (Blueprint $table) {
+            $table->increments('none_id');
+            $table->string('name', 20);
+            $table->timestamps();
+        });
+        \DB::table('a2')->insert([
+            ['name' => 'row1'],
+            ['name' => 'row2'],
+            ['name' => 'row3'],
+        ]);
+        Schema::create('a3', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 20);
+            $table->integer('user_id');
+            $table->integer('a1_d_id');
+            $table->integer('a2_id');
+            $table->timestamps();
+        });
+        \DB::table('a3')->insert([
+            ['name' => 'row1', 'user_id' => 1, 'a1_d_id' => 1, 'a2_id' => 1],
+            ['name' => 'row1', 'user_id' => 1, 'a1_d_id' => 1, 'a2_id' => 2],
+            ['name' => 'row1', 'user_id' => 2, 'a1_d_id' => 2, 'a2_id' => 2],
+            ['name' => 'row1', 'user_id' => 1, 'a1_d_id' => 1, 'a2_id' => 3],
+            ['name' => 'row2', 'user_id' => 2, 'a1_d_id' => 2, 'a2_id' => 3],
+            ['name' => 'row3', 'user_id' => 3, 'a1_d_id' => 3, 'a2_id' => 1],
+            ['name' => 'row3', 'user_id' => 3, 'a1_d_id' => 3, 'a2_id' => 2],
+        ]);
+        Schema::create('a4', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 20);
+            $table->integer('a1_id');
+            $table->timestamps();
+        });
+        \DB::table('a4')->insert([
+            ['name' => 'row 1', 'a1_id' => 1],
+            ['name' => 'row 2', 'a1_id' => 2],
+            ['name' => 'row 3', 'a1_id' => 3],
+        ]);
+        Schema::create('pivot', function (Blueprint $table) {
+            $table->integer('a1_id')->unsigned();
+            $table->integer('a2_id')->unsigned();
+        });
+        \DB::table('pivot')->insert([
+            ['a1_id' => 1, 'a2_id' => 1,],
+            ['a1_id' => 2, 'a2_id' => 3,],
+            ['a1_id' => 3, 'a2_id' => 3,],
+        ]);
+
+        Schema::create('poly_morph_comments', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('user_id');
+            $table->string('body', 30);
+            $table->unsignedInteger('morphed_id');
+            $table->string('morphed_type', 50);
+            $table->timestamps();
+
+//            $table->unique(['user_id', 'morphed_id', 'morphed_type']);
+        });
+    }
+}

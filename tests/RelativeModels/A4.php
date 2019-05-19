@@ -1,11 +1,13 @@
 <?php
 
-namespace Imanghafoori\Relativity\Tests;
+namespace Imanghafoori\Relativity\Tests\RelativeModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Imanghafoori\Relativity\DynamicRelations;
 
-class Video extends Model
+class A4 extends Model
 {
     use DynamicRelations;
+
+    protected $table = 'a4';
 }

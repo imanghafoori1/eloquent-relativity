@@ -1,13 +1,11 @@
 <?php
 
-namespace Imanghafoori\Relativity\Tests;
+namespace Imanghafoori\Relativity\Tests\RelativeModels;
 
 use Illuminate\Database\Eloquent\Model;
 use Imanghafoori\Relativity\DynamicRelations;
 
-class A4 extends Model
+class Post extends Model
 {
     use DynamicRelations;
-
-    protected $table = 'a4';
 }

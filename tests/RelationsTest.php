@@ -2,18 +2,12 @@
 
 namespace Imanghafoori\Relativity\Tests;
 
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
-use Imanghafoori\Relativity\Tests\Normal\User as UserN;
-use Imanghafoori\Relativity\Tests\Normal\A2 as A2N;
-use Imanghafoori\Relativity\Tests\Normal\Comment as A3N;
-use Imanghafoori\Relativity\Tests\Normal\Post as NormalPost;
-use Imanghafoori\Relativity\Tests\Normal\Tag as NormalTag;
-use Imanghafoori\Relativity\Tests\Normal\Video as NormalVideo;
-use Imanghafoori\Relativity\Tests\Normal\AttachableComment as NAttachableComment;
-use Imanghafoori\Relativity\Tests\Normal\NUser;
+use Illuminate\Support\Facades\Schema;
+use Imanghafoori\Relativity\Tests\Normal\{A2 as A2N, User as UserN};
+use Imanghafoori\Relativity\Tests\RelativeModels\{A2, A4, Comment, User};
 
-class SampleTest extends TestCase
+class RelationsTest extends TestCase
 {
     public function test_one_to_many_relation()
     {
@@ -52,96 +46,6 @@ class SampleTest extends TestCase
         $this->assertEquals(A2::find(3)->a1->pluck('id'), A2N::find(3)->a1->pluck('id'));
         $this->assertEquals(User::find(1)->a2->first()->pivot->id, UserN::find(1)->a2->first()->pivot->id);
         $this->assertEquals(get_class(User::find(1)->a2->first()->pivot), get_class(UserN::find(1)->a2->first()->pivot));
-    }
-
-    public function test_morph_many()
-    {
-        \Illuminate\Database\Eloquent\Relations\Relation::morphMap([
-            'user2' => "Imanghafoori\Relativity\Tests\Normal\User",
-            'user1' => User::class,
-        ]);
-
-        $this->migrateAndSeed();
-
-        User::morph_many('poly_comments', AttachableComment::class, 'commented', 'morphed_type', 'morphed_id');
-
-        $a1 = User::find(1);
-        $a1->poly_comments()->create(['body' => '1', 'user_id' => 1]);
-        $a1->poly_comments()->create(['body' => '2', 'user_id' => 2]);
-        $a1->poly_comments()->create(['body' => '3', 'user_id' => 3]);
-
-        $this->assertEquals(3, \DB::table('poly_morph_comments')->where("morphed_type", 'user1')->count());
-        $this->assertEquals(3, $a1->poly_comments()->count());
-        $this->assertEquals(3, $a1->poly_comments->count());
-
-        $a2 = UserN::find(1);
-        $a2->poly_comments()->create(['body' => '1', 'user_id' => 1]);
-        $a2->poly_comments()->create(['body' => '2', 'user_id' => 2]);
-        $a2->poly_comments()->create(['body' => '3', 'user_id' => 3]);
-
-        $this->assertEquals(3, \DB::table('poly_morph_comments')->where("morphed_type", 'user2')->count());
-        $this->assertEquals(3, $a2->poly_comments()->count());
-        $this->assertEquals(3, $a2->poly_comments->count());
-
-        $this->assertEquals($a1->poly_comments()->toSql(), $a2->poly_comments()->toSql());
-    }
-
-    public function test_morph_to_many()
-    {
-        $this->migrateMorphToMany();
-
-        Post::morph_to_many('tags', Tag::class, 'taggable');
-        Tag::morphed_by_many('posts', Post::class, 'taggable');
-        Tag::morphed_by_many('videos', Video::class, 'taggable');
-
-        \DB::table('posts')->insert([['name' => 'post_1'], ['name' => 'post_2'], ['name' => 'post_3']]);
-        \DB::table('videos')->insert([['name' => 'video_1'], ['name' => 'video_2'], ['name' => 'video_3']]);
-
-        Post::find(1)->tags()->create(['name' => 'tag_1']);
-        Post::find(1)->tags()->create(['name' => 'tag_2']);
-        Post::find(1)->tags()->create(['name' => 'tag_3']);
-
-        NormalPost::find(1)->tags()->create(['name' => 'tag_1']);
-        NormalPost::find(1)->tags()->create(['name' => 'tag_2']);
-        NormalPost::find(1)->tags()->create(['name' => 'tag_3']);
-
-        $this->assertEquals(Post::find(1)->tags()->toSql(), NormalPost::find(1)->tags()->toSql());
-        $this->assertEquals(NormalTag::find(1)->posts()->toSql(), Tag::find(1)->posts()->toSql());
-
-        $this->assertEquals(3, NormalPost::find(1)->tags()->count());
-        $this->assertEquals(3, NormalPost::find(1)->tags->count());
-
-        $this->assertEquals(3, Post::find(1)->tags()->count());
-        $this->assertEquals(3, Post::find(1)->tags->count());
-
-        $this->assertEquals(1, Tag::find(1)->posts->first()->id);
-        $this->assertEquals(1, Tag::find(1)->posts()->first()->id);
-    }
-
-    private function migrateMorphToMany() {
-
-        Schema::create('posts', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 20);
-            $table->timestamps();
-        });
-        Schema::create('videos', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 20);
-            $table->timestamps();
-        });
-        Schema::create('tags', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 20);
-            $table->timestamps();
-        });
-        Schema::create('taggables', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('tag_id');
-            $table->unsignedInteger('taggable_id');
-            $table->string('taggable_type', 20);
-
-        });
     }
 
     public function test_has_one()

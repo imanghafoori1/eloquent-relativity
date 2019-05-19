@@ -141,6 +141,26 @@ trait DynamicRelations
         return new AbstractRelation(['morphTo', static::class, $relationName, $params]);
     }
 
+    /**
+     * Define a has-many-through relationship.
+     *
+     * @param string $relationName
+     * @param string $related
+     * @param string $through
+     * @param string|null $firstKey
+     * @param string|null $secondKey
+     * @param string|null $localKey
+     * @param string|null $secondLocalKey
+     *
+     * @return \Imanghafoori\Relativity\AbstractRelation
+     */
+    public static function has_many_through($relationName, $related, $through, $firstKey = null, $secondKey = null, $localKey = null, $secondLocalKey = null)
+    {
+        $params = [$related, $through, $firstKey, $secondKey, $localKey, $secondLocalKey];
+
+        return new AbstractRelation(['hasManyThrough', static::class, $relationName, $params]);
+    }
+
     public static function forceEagerLoading(...$relation)
     {
         static::registerModelEvent('booting', function ($model) use ($relation) {
