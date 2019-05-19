@@ -2,11 +2,17 @@
 
 namespace Imanghafoori\Relativity\Tests;
 
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Imanghafoori\Relativity\Tests\Normal\{Post as NormalPost, Tag as NormalTag, User as UserN};
-use Imanghafoori\Relativity\Tests\RelativeModels\{AttachableComment, Post, Tag, User, Video};
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Imanghafoori\Relativity\Tests\RelativeModels\Tag;
+use Imanghafoori\Relativity\Tests\RelativeModels\Post;
+use Imanghafoori\Relativity\Tests\RelativeModels\User;
+use Imanghafoori\Relativity\Tests\Normal\User as UserN;
+use Imanghafoori\Relativity\Tests\RelativeModels\Video;
+use Imanghafoori\Relativity\Tests\Normal\Tag as NormalTag;
+use Imanghafoori\Relativity\Tests\Normal\Post as NormalPost;
+use Imanghafoori\Relativity\Tests\RelativeModels\AttachableComment;
 
 class PolymorphicRelationsTest extends TestCase
 {
@@ -26,7 +32,7 @@ class PolymorphicRelationsTest extends TestCase
         $a1->poly_comments()->create(['body' => '2', 'user_id' => 2]);
         $a1->poly_comments()->create(['body' => '3', 'user_id' => 3]);
 
-        $this->assertEquals(3, \DB::table('poly_morph_comments')->where("morphed_type", 'user1')->count());
+        $this->assertEquals(3, \DB::table('poly_morph_comments')->where('morphed_type', 'user1')->count());
         $this->assertEquals(3, $a1->poly_comments()->count());
         $this->assertEquals(3, $a1->poly_comments->count());
 
@@ -35,7 +41,7 @@ class PolymorphicRelationsTest extends TestCase
         $a2->poly_comments()->create(['body' => '2', 'user_id' => 2]);
         $a2->poly_comments()->create(['body' => '3', 'user_id' => 3]);
 
-        $this->assertEquals(3, \DB::table('poly_morph_comments')->where("morphed_type", 'user2')->count());
+        $this->assertEquals(3, \DB::table('poly_morph_comments')->where('morphed_type', 'user2')->count());
         $this->assertEquals(3, $a2->poly_comments()->count());
         $this->assertEquals(3, $a2->poly_comments->count());
 
@@ -74,8 +80,8 @@ class PolymorphicRelationsTest extends TestCase
         $this->assertEquals(1, Tag::find(1)->posts()->first()->id);
     }
 
-    private function migrateMorphToMany() {
-
+    private function migrateMorphToMany()
+    {
         Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 20);
@@ -96,7 +102,6 @@ class PolymorphicRelationsTest extends TestCase
             $table->unsignedInteger('tag_id');
             $table->unsignedInteger('taggable_id');
             $table->string('taggable_type', 20);
-
         });
     }
 

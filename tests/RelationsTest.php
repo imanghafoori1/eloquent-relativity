@@ -2,11 +2,15 @@
 
 namespace Imanghafoori\Relativity\Tests;
 
-use Illuminate\Database\Events\QueryExecuted;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Imanghafoori\Relativity\Tests\Normal\{A2 as A2N, User as UserN};
-use Imanghafoori\Relativity\Tests\RelativeModels\{A2, A4, Comment, User};
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Events\QueryExecuted;
+use Imanghafoori\Relativity\Tests\Normal\A2 as A2N;
+use Imanghafoori\Relativity\Tests\RelativeModels\A2;
+use Imanghafoori\Relativity\Tests\RelativeModels\A4;
+use Imanghafoori\Relativity\Tests\RelativeModels\User;
+use Imanghafoori\Relativity\Tests\Normal\User as UserN;
+use Imanghafoori\Relativity\Tests\RelativeModels\Comment;
 
 class RelationsTest extends TestCase
 {
@@ -27,7 +31,7 @@ class RelationsTest extends TestCase
         $this->assertEquals(UserN::find(1)->comments()->count(), User::find(1)->comments()->count());
         $this->assertEquals(get_class(UserN::find(1)->comments2()), get_class(User::find(1)->comments2()));
 
-        $this->assertEquals(UserN::find(1)->comments2()->toSql(), User::find(1)->comments2()->toSql() );
+        $this->assertEquals(UserN::find(1)->comments2()->toSql(), User::find(1)->comments2()->toSql());
         $this->assertEquals(get_class(UserN::find(1)->comments2), get_class(User::find(1)->comments2));
 
         $this->assertEquals(User::find(1)->commentsSorted->first()->id, UserN::find(1)->commentsSorted->first()->id);
@@ -84,7 +88,7 @@ class RelationsTest extends TestCase
         $this->assertEquals(2, $counter);
         $this->assertEquals([
             0 => 'select * from "a1" where "a1"."id" = ? limit 1',
-            1 => 'select * from "a3" where "a3"."user_id" in (1)'
+            1 => 'select * from "a3" where "a3"."user_id" in (1)',
         ], $queries);
     }
 
@@ -147,9 +151,9 @@ class RelationsTest extends TestCase
             $table->integer('a2_id')->unsigned();
         });
         \DB::table('pivot')->insert([
-            ['a1_id' => 1, 'a2_id' => 1,],
-            ['a1_id' => 2, 'a2_id' => 3,],
-            ['a1_id' => 3, 'a2_id' => 3,],
+            ['a1_id' => 1, 'a2_id' => 1],
+            ['a1_id' => 2, 'a2_id' => 3],
+            ['a1_id' => 3, 'a2_id' => 3],
         ]);
     }
 }
