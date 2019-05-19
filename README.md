@@ -34,6 +34,13 @@ Imagine you are in a team and each member is working on a seperate module.
 
 But when you want to start to define the eloquent relations between `Comment` and `User` and `Article` models, you immediately realize that you have to put code on the eloquent models of other modules to define the inverse of the relationships. Crap ! 
 
+
+![Diagram](https://user-images.githubusercontent.com/6961695/57987611-26242a00-7a99-11e9-8c32-67e76b57420f.jpg)
+
+Look How everything is pointing inward.
+
+If you look at the `User` folder you will have absolutely no footprint of Comment or Article.
+
 We have to touch the code of both `Blog` and `User` module when add a new `comment` module.
 
 For example : You have to open `User.php` and define the
