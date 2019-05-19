@@ -2,6 +2,7 @@
 
 namespace Imanghafoori\Relativity\Tests;
 
+use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Imanghafoori\Relativity\Tests\Normal\{A2 as A2N, User as UserN};
@@ -66,6 +67,27 @@ class RelationsTest extends TestCase
         $this->assertEquals(UserN::find(3)->a4()->toSql(), User::find(3)->a4()->toSql());
     }
 
+    public function test_eager_loading()
+    {
+        $this->migrateAndSeed();
+
+        User::has_many('comments', Comment::class);
+        User::forceEagerLoading('comments');
+
+        $counter = 0;
+        $queries = [];
+        \DB::listen(function (QueryExecuted $q) use (&$counter, &$queries) {
+            $counter++;
+            $queries[] = $q->sql;
+        });
+        User::find(1);
+        $this->assertEquals(2, $counter);
+        $this->assertEquals([
+            0 => 'select * from "a1" where "a1"."id" = ? limit 1',
+            1 => 'select * from "a3" where "a3"."user_id" in (1)'
+        ], $queries);
+    }
+
     private function migrateAndSeed()
     {
         Schema::defaultStringLength(191);
@@ -99,6 +121,7 @@ class RelationsTest extends TestCase
             $table->integer('a2_id');
             $table->timestamps();
         });
+
         \DB::table('a3')->insert([
             ['name' => 'row1', 'user_id' => 1, 'a1_d_id' => 1, 'a2_id' => 1],
             ['name' => 'row1', 'user_id' => 1, 'a1_d_id' => 1, 'a2_id' => 2],
@@ -128,16 +151,5 @@ class RelationsTest extends TestCase
             ['a1_id' => 2, 'a2_id' => 3,],
             ['a1_id' => 3, 'a2_id' => 3,],
         ]);
-
-        Schema::create('poly_morph_comments', function (Blueprint $table) {
-            $table->increments('id');
-            $table->unsignedInteger('user_id');
-            $table->string('body', 30);
-            $table->unsignedInteger('morphed_id');
-            $table->string('morphed_type', 50);
-            $table->timestamps();
-
-//            $table->unique(['user_id', 'morphed_id', 'morphed_type']);
-        });
     }
 }
