@@ -2,6 +2,8 @@
 
 This allows you to decouple your eloquent models from one another.
 
+   <img width="600px" src="https://user-images.githubusercontent.com/6961695/57988296-be261180-7aa1-11e9-9e28-645ab0da75dd.png" alt="widgetize_header"></img>
+
 [![Build Status](https://travis-ci.org/imanghafoori1/eloquent-relativity.svg?branch=master)](https://travis-ci.org/imanghafoori1/eloquent-relativity)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/imanghafoori1/eloquent-relativity/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/imanghafoori1/eloquent-relativity/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/imanghafoori1/eloquent-relativity/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/imanghafoori1/eloquent-relativity/?branch=master)
