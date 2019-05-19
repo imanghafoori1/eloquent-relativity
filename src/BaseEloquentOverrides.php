@@ -18,6 +18,7 @@ trait BaseEloquentOverrides
      * @param  string  $relatedKey
      * @param  bool  $inverse
      * @param  string  $caller
+     *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function morphToMany($related, $name, $table = null, $foreignPivotKey = null,
