@@ -25,7 +25,10 @@ But the `user` module should not know or care about the `blog` module. The `blog
 
 Now we want to add a `comment` module, on the top of `user` and `blog` module.
 
-![Diagram](https://user-images.githubusercontent.com/6961695/57987611-26242a00-7a99-11e9-8c32-67e76b57420f.jpg)
+
+  <img width="600px" src="https://user-images.githubusercontent.com/6961695/57987611-26242a00-7a99-11e9-8c32-67e76b57420f.jpg"></img>
+
+![Diagram]()
 
 ### The Right way :
 
