@@ -23,6 +23,8 @@ But the `user` module should not know or care about the `blog` module. The `blog
 
 Now we want to add a `comment` module, on the top of `user` and `blog` module.
 
+![Diagram](https://user-images.githubusercontent.com/6961695/57987611-26242a00-7a99-11e9-8c32-67e76b57420f.jpg)
+
 ### The Right way :
 
 In a truely modular system when you add the `comments`, you should NOT go and touch the code within the `users` or `blog` module.
@@ -34,8 +36,6 @@ Imagine you are in a team and each member is working on a seperate module.
 
 But when you want to start to define the eloquent relations between `Comment` and `User` and `Article` models, you immediately realize that you have to put code on the eloquent models of other modules to define the inverse of the relationships. Crap ! 
 
-
-![Diagram](https://user-images.githubusercontent.com/6961695/57987611-26242a00-7a99-11e9-8c32-67e76b57420f.jpg)
 
 Look How everything is pointing inward.
 
@@ -49,7 +49,7 @@ public function comments() {
     return $this->hasMany(Comment::class); 
 }
 ```
-snd this is a no no, because it makes an arrow from inside to outside.
+and this is a no no, because it makes an arrow from inside to outside.
 
 So what to do ?!
 
@@ -88,6 +88,7 @@ class CommentsServiceProvider
 
 ```
 
+
 Now you can do these queries :
 
 ```php
@@ -108,8 +109,11 @@ You have defined the method remotely from your new module at run-time:
  ```php
  User::has_many('comments', Comment::class);
  ```
+ 
+ ![Diagram](https://user-images.githubusercontent.com/6961695/57987611-26242a00-7a99-11e9-8c32-67e76b57420f.jpg)
+ 
 
-### extra features :
+### Extra features :
 
 
 sometimes you need to call extra methods on the relations.
