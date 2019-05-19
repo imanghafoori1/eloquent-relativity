@@ -12,5 +12,4 @@ class AttachableComment extends Model
     protected $table = 'poly_morph_comments';
 
     protected $guarded = [];
-
 }

@@ -38,7 +38,7 @@ trait DynamicRelations
         $relatedPivotKey = null, $parentKey = null, $relatedKey = null)
     {
         return new AbstractRelation(['morphedByMany', static::class, $relationName, [$related, $name, $table, $foreignPivotKey,
-            $relatedPivotKey, $parentKey, $relatedKey, $relationName]]);
+            $relatedPivotKey, $parentKey, $relatedKey, $relationName, ]]);
     }
 
     /**
@@ -49,12 +49,12 @@ trait DynamicRelations
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public static function has_many($relationName = null, string $related, $foreignKey = null, $localKey = null)
+    public static function has_many($relationName, string $related, $foreignKey = null, $localKey = null)
     {
         return new AbstractRelation(['hasMany', static::class, $relationName, [$related, $foreignKey, $localKey]]);
     }
 
-    public static function has_one($relationName = null, $related, $foreignKey = null, $localKey = null)
+    public static function has_one($relationName, $related, $foreignKey = null, $localKey = null)
     {
         return new AbstractRelation(['hasOne', static::class, $relationName, [$related, $foreignKey, $localKey]]);
     }
@@ -67,7 +67,7 @@ trait DynamicRelations
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public static function belongs_to($relationName = null, string $related, $foreignKey = null, $ownerKey = null)
+    public static function belongs_to($relationName, string $related, $foreignKey = null, $ownerKey = null)
     {
         if (is_null($foreignKey)) {
             $foreignKey = Str::snake($relationName).'_id';
@@ -104,7 +104,7 @@ trait DynamicRelations
         $relatedKey = null, $inverse = false)
     {
         $params = [$related, $name, $table, $foreignPivotKey,
-            $relatedPivotKey, $parentKey, $relatedKey, $inverse, $relationName];
+            $relatedPivotKey, $parentKey, $relatedKey, $inverse, $relationName, ];
 
         return new AbstractRelation(['morphToMany', static::class, $relationName, $params]);
     }
@@ -131,6 +131,7 @@ trait DynamicRelations
     public static function morph_one($relationName, $related, $name, $type = null, $id = null, $localKey = null)
     {
         $params = [$related, $name, $type, $id, $localKey];
+
         return new AbstractRelation(['morphOne', static::class, $relationName, $params]);
     }
 
