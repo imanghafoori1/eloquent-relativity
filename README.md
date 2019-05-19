@@ -8,6 +8,7 @@ This allows you to decouple your eloquent models from one another.
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/imanghafoori1/eloquent-relativity/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/imanghafoori1/eloquent-relativity/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/imanghafoori1/eloquent-relativity/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/imanghafoori1/eloquent-relativity/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/imanghafoori/eloquent-relativity/v/stable)](https://packagist.org/packages/imanghafoori/eloquent-relativity)
+[![StyleCI](https://github.styleci.io/repos/186496125/shield?branch=master)]
 
 ### A problem which stops true modularity :
 
