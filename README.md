@@ -49,6 +49,7 @@ public function comments() {
     return $this->hasMany(Comment::class); 
 }
 ```
+snd this is a no no, because it makes an arrow from inside to outside.
 
 So what to do ?!
 
