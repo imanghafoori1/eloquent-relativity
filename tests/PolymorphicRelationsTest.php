@@ -2,6 +2,7 @@
 
 namespace Imanghafoori\Relativity\Tests;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Imanghafoori\Relativity\Tests\Normal\{Post as NormalPost, Tag as NormalTag, User as UserN};
@@ -11,7 +12,7 @@ class PolymorphicRelationsTest extends TestCase
 {
     public function test_morph_many()
     {
-        \Illuminate\Database\Eloquent\Relations\Relation::morphMap([
+        Relation::morphMap([
             'user2' => "Imanghafoori\Relativity\Tests\Normal\User",
             'user1' => User::class,
         ]);
@@ -113,53 +114,6 @@ class PolymorphicRelationsTest extends TestCase
             ['name' => 'row1'],
             ['name' => 'row2'],
             ['name' => 'row3'],
-        ]);
-        Schema::create('a2', function (Blueprint $table) {
-            $table->increments('none_id');
-            $table->string('name', 20);
-            $table->timestamps();
-        });
-        \DB::table('a2')->insert([
-            ['name' => 'row1'],
-            ['name' => 'row2'],
-            ['name' => 'row3'],
-        ]);
-        Schema::create('a3', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 20);
-            $table->integer('user_id');
-            $table->integer('a1_d_id');
-            $table->integer('a2_id');
-            $table->timestamps();
-        });
-        \DB::table('a3')->insert([
-            ['name' => 'row1', 'user_id' => 1, 'a1_d_id' => 1, 'a2_id' => 1],
-            ['name' => 'row1', 'user_id' => 1, 'a1_d_id' => 1, 'a2_id' => 2],
-            ['name' => 'row1', 'user_id' => 2, 'a1_d_id' => 2, 'a2_id' => 2],
-            ['name' => 'row1', 'user_id' => 1, 'a1_d_id' => 1, 'a2_id' => 3],
-            ['name' => 'row2', 'user_id' => 2, 'a1_d_id' => 2, 'a2_id' => 3],
-            ['name' => 'row3', 'user_id' => 3, 'a1_d_id' => 3, 'a2_id' => 1],
-            ['name' => 'row3', 'user_id' => 3, 'a1_d_id' => 3, 'a2_id' => 2],
-        ]);
-        Schema::create('a4', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 20);
-            $table->integer('a1_id');
-            $table->timestamps();
-        });
-        \DB::table('a4')->insert([
-            ['name' => 'row 1', 'a1_id' => 1],
-            ['name' => 'row 2', 'a1_id' => 2],
-            ['name' => 'row 3', 'a1_id' => 3],
-        ]);
-        Schema::create('pivot', function (Blueprint $table) {
-            $table->integer('a1_id')->unsigned();
-            $table->integer('a2_id')->unsigned();
-        });
-        \DB::table('pivot')->insert([
-            ['a1_id' => 1, 'a2_id' => 1,],
-            ['a1_id' => 2, 'a2_id' => 3,],
-            ['a1_id' => 3, 'a2_id' => 3,],
         ]);
 
         Schema::create('poly_morph_comments', function (Blueprint $table) {
