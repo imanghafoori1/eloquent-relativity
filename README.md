@@ -110,8 +110,6 @@ You have defined the method remotely from your new module at run-time:
  User::has_many('comments', Comment::class);
  ```
  
- ![Diagram](https://user-images.githubusercontent.com/6961695/57987611-26242a00-7a99-11e9-8c32-67e76b57420f.jpg)
- 
 
 ### Extra features :
 
