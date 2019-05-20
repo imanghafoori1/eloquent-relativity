@@ -86,10 +86,9 @@ class RelationsTest extends TestCase
         });
         User::find(1);
         $this->assertEquals(2, $counter);
-        $this->assertEquals([
-            0 => 'select * from "a1" where "a1"."id" = ? limit 1',
-            1 => 'select * from "a3" where "a3"."user_id" in (1)',
-        ], $queries);
+        $this->assertEquals('select * from "a1" where "a1"."id" = ? limit 1', $queries[0]);
+        $q = 'select * from "a3" where "a3"."user_id" in';
+        $this->assertEquals($q, substr($queries[1], 0, strlen($q)));
     }
 
     private function migrateAndSeed()
