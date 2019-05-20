@@ -12,6 +12,6 @@ class AttachableComment extends Model
 
     public function commentable()
     {
-        return $this->morphTo('commentable', 'morphed_type', 'morphed_id' );
+        return $this->morphTo('commentable', 'morphed_type', 'morphed_id');
     }
 }
