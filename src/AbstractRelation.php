@@ -22,17 +22,8 @@ class AbstractRelation
 
     public function __destruct()
     {
-        $constraints = $this->constraints;
-
         [$relationType, $model, $relationName, $data] = $this->relationData;
 
-        $model::defineRelation($relationName, function () use ($relationType, $data, $constraints) {
-            $relation = $this->{$relationType} (...$data);
-            foreach ($constraints as $cons) {
-                $relation = $relation->{$cons[0]}(...$cons[1]);
-            }
-
-            return $relation;
-        });
+        $model::defineRelation($relationType, $relationName, $data, $this->constraints);
     }
 }

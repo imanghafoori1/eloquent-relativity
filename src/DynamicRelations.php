@@ -10,9 +10,18 @@ trait DynamicRelations
 
     protected static $dynamicRelations = [];
 
-    public static function defineRelation($name, $macro)
+    public static function defineRelation($relationType, $relationName, $data, $constraints)
     {
-        static::$dynamicRelations[$name] = $macro;
+        $method = function () use ($relationType, $data, $constraints) {
+            $relation = $this->{$relationType} (...$data);
+            foreach ($constraints as $cons) {
+                $relation = $relation->{$cons[0]}(...$cons[1]);
+            }
+
+            return $relation;
+        };
+
+        static::$dynamicRelations[$relationName] = $method;
     }
 
     /**
