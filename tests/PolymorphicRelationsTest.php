@@ -13,6 +13,7 @@ use Imanghafoori\Relativity\Tests\RelativeModels\Video;
 use Imanghafoori\Relativity\Tests\Normal\Tag as NormalTag;
 use Imanghafoori\Relativity\Tests\Normal\Post as NormalPost;
 use Imanghafoori\Relativity\Tests\RelativeModels\AttachableComment;
+use Imanghafoori\Relativity\Tests\Normal\AttachableComment as AttachableCommentN;
 
 class PolymorphicRelationsTest extends TestCase
 {
@@ -27,11 +28,17 @@ class PolymorphicRelationsTest extends TestCase
 
         User::morph_many('poly_comments', AttachableComment::class, 'commented', 'morphed_type', 'morphed_id');
 
+        AttachableComment::morph_to('commentable', 'morphed_type', 'morphed_id' );
+
         $a1 = User::find(1);
         $a1->poly_comments()->create(['body' => '1', 'user_id' => 1]);
         $a1->poly_comments()->create(['body' => '2', 'user_id' => 2]);
         $a1->poly_comments()->create(['body' => '3', 'user_id' => 3]);
 
+        $this->assertEquals(
+            AttachableComment::find(1)->commentable()->toSql(),
+            AttachableCommentN::find(1)->commentable()->toSql()
+        );
         $this->assertEquals(3, \DB::table('poly_morph_comments')->where('morphed_type', 'user1')->count());
         $this->assertEquals(3, $a1->poly_comments()->count());
         $this->assertEquals(3, $a1->poly_comments->count());
