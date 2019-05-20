@@ -63,6 +63,15 @@ trait DynamicRelations
         return new AbstractRelation(['hasMany', static::class, $relationName, [$related, $foreignKey, $localKey]]);
     }
 
+    /**
+     * Define a one-to-one relationship.
+     *
+     * @param  string  $related
+     * @param  string  $foreignKey
+     * @param  string  $localKey
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public static function has_one($relationName, $related, $foreignKey = null, $localKey = null)
     {
         return new AbstractRelation(['hasOne', static::class, $relationName, [$related, $foreignKey, $localKey]]);
@@ -85,6 +94,18 @@ trait DynamicRelations
         return new AbstractRelation(['belongsTo', static::class, $relationName, [$related, $foreignKey, $ownerKey, $relationName]]);
     }
 
+    /**
+     * Define a many-to-many relationship.
+     *
+     * @param  string  $related
+     * @param  string  $table
+     * @param  string  $foreignPivotKey
+     * @param  string  $relatedPivotKey
+     * @param  string  $parentKey
+     * @param  string  $relatedKey
+     * @param  string  $relation
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public static function belongs_to_many($relationName, $related, $table = null, $foreignPivotKey = null, $relatedPivotKey = null,
         $parentKey = null, $relatedKey = null)
     {
@@ -137,6 +158,16 @@ trait DynamicRelations
         return new AbstractRelation(['morphMany', static::class, $relationName, $params]);
     }
 
+    /**
+     * Define a polymorphic one-to-one relationship.
+     *
+     * @param  string  $related
+     * @param  string  $name
+     * @param  string  $type
+     * @param  string  $id
+     * @param  string  $localKey
+     * @return \Illuminate\Database\Eloquent\Relations\MorphOne
+     */
     public static function morph_one($relationName, $related, $name, $type = null, $id = null, $localKey = null)
     {
         $params = [$related, $name, $type, $id, $localKey];
@@ -144,6 +175,15 @@ trait DynamicRelations
         return new AbstractRelation(['morphOne', static::class, $relationName, $params]);
     }
 
+    /**
+     * Define a polymorphic, inverse one-to-one or many relationship.
+     *
+     * @param  string  $relationName
+     * @param  string  $type
+     * @param  string  $id
+     * @param  string  $ownerKey
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public static function morph_to($relationName, $type = null, $id = null, $ownerKey = null)
     {
         $params = [$relationName, $type, $id, $ownerKey];
@@ -154,15 +194,14 @@ trait DynamicRelations
     /**
      * Define a has-many-through relationship.
      *
-     * @param string $relationName
-     * @param string $related
-     * @param string $through
-     * @param string|null $firstKey
-     * @param string|null $secondKey
-     * @param string|null $localKey
-     * @param string|null $secondLocalKey
+     * @param  string  $related
+     * @param  string  $through
+     * @param  string|null  $firstKey
+     * @param  string|null  $secondKey
+     * @param  string|null  $localKey
+     * @param  string|null  $secondLocalKey
      *
-     * @return \Imanghafoori\Relativity\AbstractRelation
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public static function has_many_through($relationName, $related, $through, $firstKey = null, $secondKey = null, $localKey = null, $secondLocalKey = null)
     {
