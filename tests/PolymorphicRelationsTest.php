@@ -28,7 +28,7 @@ class PolymorphicRelationsTest extends TestCase
 
         User::morph_many('poly_comments', AttachableComment::class, 'commented', 'morphed_type', 'morphed_id');
 
-        AttachableComment::morph_to('commentable', 'morphed_type', 'morphed_id' );
+        AttachableComment::morph_to('commentable', 'morphed_type', 'morphed_id');
 
         $a1 = User::find(1);
         $a1->poly_comments()->create(['body' => '1', 'user_id' => 1]);
