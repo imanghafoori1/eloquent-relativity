@@ -1,6 +1,6 @@
 # Eloquent Relativity
 
-This allows you to decouple your eloquent models from one another.
+This allows you to decouple your eloquent models from one another, by defining relations dynamically at run-time.
 
    <img width="600px" src="https://user-images.githubusercontent.com/6961695/57988296-be261180-7aa1-11e9-9e28-645ab0da75dd.png" alt="widgetize_header"></img>
 
