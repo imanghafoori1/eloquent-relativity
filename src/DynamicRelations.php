@@ -43,6 +43,20 @@ trait DynamicRelations
         return call_user_func_array($dynamicRelation->bindTo($this, static::class), $parameters);
     }
 
+    /**
+     * Define a polymorphic, inverse many-to-many relationship.
+     *
+     * @param  string  $relationName
+     * @param  string  $related
+     * @param  string  $name
+     * @param  string  $table
+     * @param  string  $foreignPivotKey
+     * @param  string  $relatedPivotKey
+     * @param  string  $parentKey
+     * @param  string  $relatedKey
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
     public static function morphed_by_many($relationName, $related, $name, $table = null, $foreignPivotKey = null,
         $relatedPivotKey = null, $parentKey = null, $relatedKey = null)
     {
@@ -51,14 +65,14 @@ trait DynamicRelations
     }
 
     /**
+     * @param string $relationName
      * @param string $related
-     * @param $relationName
      * @param null $foreignKey
      * @param null $localKey
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public static function has_many($relationName, string $related, $foreignKey = null, $localKey = null)
+    public static function has_many($relationName, $related, $foreignKey = null, $localKey = null)
     {
         return new AbstractRelation(['hasMany', static::class, $relationName, [$related, $foreignKey, $localKey]]);
     }
@@ -66,6 +80,7 @@ trait DynamicRelations
     /**
      * Define a one-to-one relationship.
      *
+     * @param  string  $relationName
      * @param  string  $related
      * @param  string  $foreignKey
      * @param  string  $localKey
@@ -78,8 +93,8 @@ trait DynamicRelations
     }
 
     /**
+     * @param string $relationName
      * @param string $related
-     * @param $relationName
      * @param null $foreignKey
      * @param null $ownerKey
      *
@@ -104,7 +119,6 @@ trait DynamicRelations
      * @param  string  $relatedPivotKey
      * @param  string  $parentKey
      * @param  string  $relatedKey
-     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public static function belongs_to_many($relationName, $related, $table = null, $foreignPivotKey = null, $relatedPivotKey = null,
@@ -127,7 +141,6 @@ trait DynamicRelations
      * @param  string  $parentKey
      * @param  string  $relatedKey
      * @param  bool  $inverse
-     *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public static function morph_to_many($relationName, $related, $name, $table = null, $foreignPivotKey = null,
@@ -149,7 +162,6 @@ trait DynamicRelations
      * @param  string  $type
      * @param  string  $id
      * @param  string  $localKey
-     *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public static function morph_many($relationName, $related, $name, $type = null, $id = null, $localKey = null)
@@ -162,6 +174,7 @@ trait DynamicRelations
     /**
      * Define a polymorphic one-to-one relationship.
      *
+     * @param  string  $relationName
      * @param  string  $related
      * @param  string  $name
      * @param  string  $type
@@ -202,7 +215,6 @@ trait DynamicRelations
      * @param  string|null  $secondKey
      * @param  string|null  $localKey
      * @param  string|null  $secondLocalKey
-     *
      * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public static function has_many_through($relationName, $related, $through, $firstKey = null, $secondKey = null, $localKey = null, $secondLocalKey = null)
