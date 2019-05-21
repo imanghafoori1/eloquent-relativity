@@ -4,13 +4,10 @@ namespace Imanghafoori\Relativity\Tests;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Events\QueryExecuted;
-use Imanghafoori\Relativity\Tests\Normal\A2 as A2N;
 use Imanghafoori\Relativity\Tests\RelativeModels\A2;
 use Imanghafoori\Relativity\Tests\RelativeModels\A4;
 use Imanghafoori\Relativity\Tests\RelativeModels\User;
 use Imanghafoori\Relativity\Tests\Normal\User as UserN;
-use Imanghafoori\Relativity\Tests\RelativeModels\Comment;
 
 class HasManyThroughTest extends TestCase
 {
