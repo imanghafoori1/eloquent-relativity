@@ -37,4 +37,9 @@ class User extends Model
     {
         return $this->hasOne(A4::class, 'a1_id');
     }
+
+    public function a4s()
+    {
+        return $this->hasManyThrough(A4::class, A2::class, null, 'a2_id');
+    }
 }

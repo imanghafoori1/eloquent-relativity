@@ -97,13 +97,14 @@ trait DynamicRelations
     /**
      * Define a many-to-many relationship.
      *
+     * @param  string  $relationName
      * @param  string  $related
      * @param  string  $table
      * @param  string  $foreignPivotKey
      * @param  string  $relatedPivotKey
      * @param  string  $parentKey
      * @param  string  $relatedKey
-     * @param  string  $relation
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public static function belongs_to_many($relationName, $related, $table = null, $foreignPivotKey = null, $relatedPivotKey = null,
@@ -194,6 +195,7 @@ trait DynamicRelations
     /**
      * Define a has-many-through relationship.
      *
+     * @param  string  $relationName
      * @param  string  $related
      * @param  string  $through
      * @param  string|null  $firstKey
