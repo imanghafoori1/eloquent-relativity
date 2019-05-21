@@ -71,6 +71,9 @@ Now the installtion finished, you first have to make your models "relative" !!!
 
 By using the `Imanghafoori\Relativity\DynamicRelations` traits on your eloquent models.
 
+![image](https://user-images.githubusercontent.com/6961695/58089939-465c0200-7bdb-11e9-8df0-2dc5212ced43.png)
+
+
 So the `User`, `Article`, `Comment` will have to have this trait one them.
 
 Now comes the sweet part :
@@ -115,6 +118,20 @@ You have defined the method remotely from your new module at run-time:
  User::has_many('comments', Comment::class);
  ```
  
+ Here is a list of supported relations :
+ 
+- has_many
+- has_one
+- belongs_to
+- belongs_to_many
+- morph_to_many
+- morph_many
+- morph_one
+- morph_to
+- morphed_by_many
+- has_many_through
+ 
+They accept the same paramters as the eloquent equivalent counter part. except the first argument should be relation name.
 
 ### Extra features :
 
