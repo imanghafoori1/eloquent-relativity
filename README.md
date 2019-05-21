@@ -161,3 +161,45 @@ User::forceEagerLoading('comments');
 ```
 
 remember this should be in the `boot` method of your Service Provider not the `register` method.
+
+
+### :exclamation: Security
+If you discover any security related issues, please email imanghafoori1@gmail.com instead of using the issue tracker.
+
+
+### :star: Your Stars Make Us Do More :star:
+As always if you found this package useful and you want to encourage us to maintain and work on it, Please press the star button to declare your willing.
+
+
+# More from the author:
+
+### Laravel Terminator
+
+ :gem: A minimal yet powerful package to give you opportunity to refactor your controllers.
+
+- https://github.com/imanghafoori1/laravel-terminator
+
+------------------
+
+### Laravel Widgetize
+
+ :gem: A minimal yet powerful package to give a better structure and caching opportunity for your laravel apps.
+
+- https://github.com/imanghafoori1/laravel-widgetize
+
+
+-------------------
+
+### Laravel Master Pass
+
+ :gem: A simple package that lets you easily impersonate your users.
+
+- https://github.com/imanghafoori1/laravel-MasterPass
+
+------------------
+
+### Laravel HeyMan
+
+ :gem: It allows to write exressive and defensive code whcih is decoupled from the rest of your app.
+
+- https://github.com/imanghafoori1/laravel-heyman
