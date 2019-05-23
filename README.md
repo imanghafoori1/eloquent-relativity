@@ -157,14 +157,12 @@ User extends Model {
 instead you can :
 
 ```php
+
 User::forceEagerLoading('comments');
+
 ```
 
 remember this should be in the `boot` method of your Service Provider not the `register` method.
-
-
-### :exclamation: Security
-If you discover any security related issues, please email imanghafoori1@gmail.com instead of using the issue tracker.
 
 
 ### :star: Your Stars Make Us Do More :star:
