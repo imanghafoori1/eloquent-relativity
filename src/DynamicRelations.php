@@ -10,6 +10,16 @@ trait DynamicRelations
 
     protected static $dynamicRelations = [];
 
+    public function getDynamicRelations()
+    {
+        return static::$dynamicRelations;
+    }
+
+    public function hasDynamicRelation(string $relation)
+    {
+        return isset(static::$dynamicRelations[$relation]);
+    }
+
     public static function defineRelation($relationType, $relationName, $data, $constraints)
     {
         $method = function () use ($relationType, $data, $constraints) {
