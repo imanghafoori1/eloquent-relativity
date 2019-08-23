@@ -202,3 +202,13 @@ As always if you found this package useful and you want to encourage us to maint
  :gem: It allows to write exressive and defensive code which is decoupled from the rest of your app.
 
 - https://github.com/imanghafoori1/laravel-heyman
+
+----------------
+
+<p align="center">
+  
+    Life is like riding a bicycle. To keep your balance you must keep moving.
+    
+    "Albert Einstein"
+    
+</p>
