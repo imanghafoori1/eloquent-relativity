@@ -11,7 +11,7 @@ This allows you to decouple your eloquent models from one another, by defining r
 [![StyleCI](https://github.styleci.io/repos/186496125/shield?branch=master)](https://github.styleci.io/repos/186496125)
 [![Total Downloads](https://poser.pugx.org/imanghafoori/eloquent-relativity/downloads)](https://packagist.org/packages/imanghafoori/eloquent-relativity)
 
-### A problem which stops true modularity :
+#### :arrow_forward: A problem which stops true modularity :
 
 Let's face it, imagine you have a modular blog application.
 
@@ -19,7 +19,7 @@ Then, you want to add a `commenting` feature to it, so that users can comment on
 
 In a modular structure, you have 2 modules (`user` module and `blog` module) and you will add a new module for `comments`
 
-### let's analyze dependencies and couplings :
+#### :arrow_forward: let's analyze dependencies and couplings :
 
 Here the `blog` module "knows" and "depends" upon the `user` module.
 
@@ -31,7 +31,7 @@ Now we want to add a `comment` module, on the top of `user` and `blog` module.
 <img width="600px" src="https://user-images.githubusercontent.com/6961695/57987611-26242a00-7a99-11e9-8c32-67e76b57420f.jpg"></img>
 
 
-### The Right way :
+#### :arrow_forward: The Right way :
 
 In a truely modular system when you add the `comments`, you should NOT go and touch the code within the `users` or `blog` module.
 (Remember the `open-closed` principle in `SOLID` ?!)
@@ -62,7 +62,7 @@ So what to do ?!
 How can `Comment` be introduced to the system without modifying the other modules ?! (@_@)
 
 
-### Install laravel-relativity : (the most painful step)
+#### :arrow_forward: Install: (the most painful step)
 
 ```
 composer require imanghafoori/eloquent-relativity   (and take a coffee...)
@@ -134,7 +134,7 @@ You have defined the method remotely from your new module at run-time:
  
 They accept the same paramters as the eloquent equivalent counter part. except the first argument should be relation name.
 
-### Extra features :
+#### :arrow_forward: Extra features :
 
 
 sometimes you need to call extra methods on the relations.
@@ -170,7 +170,7 @@ remember this should be in the `boot` method of your Service Provider not the `r
 As always if you found this package useful and you want to encourage us to maintain and work on it, Please press the star button to declare your willing.
 
 
-# More from the author:
+### :arrow_forward: More from the author:
 
 ### Laravel Terminator
 
