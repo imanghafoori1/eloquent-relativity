@@ -20,6 +20,15 @@ trait DynamicRelations
         return isset(static::$dynamicRelations[$relation]);
     }
 
+    public static function removeRelation(string $relationName)
+    {
+        if (! isset(static::$dynamicRelations[$relationName])) {
+            throw new Exceptions\UndefinedDynamicRelationException($relationName);
+        }
+
+        unset(static::$dynamicRelations[$relationName]);
+    }
+
     public static function defineRelation($relationType, $relationName, $data, $constraints)
     {
         $method = function () use ($relationType, $data, $constraints) {
