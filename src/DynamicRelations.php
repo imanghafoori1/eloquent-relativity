@@ -3,6 +3,7 @@
 namespace Imanghafoori\Relativity;
 
 use Illuminate\Support\Str;
+use Imanghafoori\Relativity\Exceptions;
 
 trait DynamicRelations
 {
@@ -18,6 +19,15 @@ trait DynamicRelations
     public function hasDynamicRelation(string $relation)
     {
         return isset(static::$dynamicRelations[$relation]);
+    }
+
+    public static function removeRelation(string $relationName)
+    {
+        if (!isset(static::$dynamicRelations[$relationName])) {
+            throw new Exceptions\UndefinedDynamicRelationException($relationName);
+        }
+
+        unset(static::$dynamicRelations[$relationName]);
     }
 
     public static function defineRelation($relationType, $relationName, $data, $constraints)
