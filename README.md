@@ -11,6 +11,10 @@ This allows you to decouple your eloquent models from one another, by defining r
 [![StyleCI](https://github.styleci.io/repos/186496125/shield?branch=master)](https://github.styleci.io/repos/186496125)
 [![Total Downloads](https://poser.pugx.org/imanghafoori/eloquent-relativity/downloads)](https://packagist.org/packages/imanghafoori/eloquent-relativity)
 
+#### Compatibility :
+
+Laravel version 5.5 and above including version 6
+
 #### :arrow_forward: A problem which stops true modularity :
 
 Let's face it, imagine you have a modular blog application.
