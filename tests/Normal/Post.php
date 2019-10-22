@@ -8,6 +8,7 @@ use Imanghafoori\Relativity\DynamicRelations;
 class Post extends Model
 {
     use DynamicRelations;
+
     /**
      * Get all of the tags for the post.
      */

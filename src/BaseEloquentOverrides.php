@@ -10,7 +10,7 @@ trait BaseEloquentOverrides
 
         $name = $debug[1]['args'][8] ?? $debug[2]['function'];
 
-        if ($name == "morphedByMany") {
+        if ($name == 'morphedByMany') {
             $name = $debug[2]['args'][7] ?? debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 4)[3]['function'];
         }
 
