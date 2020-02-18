@@ -6,27 +6,27 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
 class RelationManager
-{	
-	/**
-	 * @var RelationStore
-	 */
-	protected $store;
+{
+    /**
+     * @var RelationStore
+     */
+    protected $store;
 
-	/**
-	 * Create a new instance
-	 */
-	public function __construct(RelationStore $store)
-	{
-		$this->store = $store;
-	}
+    /**
+     * Create a new instance
+     */
+    public function __construct(RelationStore $store)
+    {
+        $this->store = $store;
+    }
 
-	/**
-	 * @return RelationStore
-	 */
-	public function getStore()
-	{
-		return $this->store;
-	}
+    /**
+     * @return RelationStore
+     */
+    public function getStore()
+    {
+        return $this->store;
+    }
 
     /**
      * Retrieve all relations
@@ -85,7 +85,7 @@ class RelationManager
 
         $this->store->set($model, $relationName, $method);
     }
-      /**
+    /**
      * Define a polymorphic, inverse many-to-many relationship.
      *
      * @param  string  $relationName
@@ -99,9 +99,17 @@ class RelationManager
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function morphed_by_many(Model $model, $relationName, $related, $name, $table = null, $foreignPivotKey = null,
-        $relatedPivotKey = null, $parentKey = null, $relatedKey = null)
-    {
+    public function morphed_by_many(
+        Model $model,
+        $relationName,
+        $related,
+        $name,
+        $table = null,
+        $foreignPivotKey = null,
+        $relatedPivotKey = null,
+        $parentKey = null,
+        $relatedKey = null
+    ) {
         return new AbstractRelation(['morphedByMany', $model, $relationName, [$related, $name, $table, $foreignPivotKey,
             $relatedPivotKey, $parentKey, $relatedKey, $relationName, ]]);
     }
@@ -163,9 +171,16 @@ class RelationManager
      * @param  string  $relatedKey
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function belongs_to_many(Model $model, $relationName, $related, $table = null, $foreignPivotKey = null, $relatedPivotKey = null,
-        $parentKey = null, $relatedKey = null)
-    {
+    public function belongs_to_many(
+        Model $model,
+        $relationName,
+        $related,
+        $table = null,
+        $foreignPivotKey = null,
+        $relatedPivotKey = null,
+        $parentKey = null,
+        $relatedKey = null
+    ) {
         $params = [$related, $table, $foreignPivotKey, $relatedPivotKey, $parentKey, $relatedKey, $relationName];
 
         return new AbstractRelation(['belongsToMany', $model, $relationName, $params]);
@@ -185,10 +200,18 @@ class RelationManager
      * @param  bool  $inverse
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function morph_to_many(Model $model, $relationName, $related, $name, $table = null, $foreignPivotKey = null,
-        $relatedPivotKey = null, $parentKey = null,
-        $relatedKey = null, $inverse = false)
-    {
+    public function morph_to_many(
+        Model $model,
+        $relationName,
+        $related,
+        $name,
+        $table = null,
+        $foreignPivotKey = null,
+        $relatedPivotKey = null,
+        $parentKey = null,
+        $relatedKey = null,
+        $inverse = false
+    ) {
         $params = [$related, $name, $table, $foreignPivotKey,
             $relatedPivotKey, $parentKey, $relatedKey, $inverse, $relationName, ];
 

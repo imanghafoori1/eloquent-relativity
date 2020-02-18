@@ -2,7 +2,6 @@
 
 namespace Imanghafoori\Relativity;
 
-
 trait DynamicRelations
 {
     use BaseEloquentOverrides;
@@ -72,7 +71,7 @@ trait DynamicRelations
     }
 
     /**
-     * Convert static call to 
+     * Convert static call to
      *
      * @param  string  $method
      * @param  array   $parameters
