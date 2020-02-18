@@ -53,10 +53,10 @@ trait DynamicRelations
             static::$relationStore = $this->newRelationStoreClass();
         }
 
-        $manager = new RelationManager(static::$relationStore);
-
         // Handle internal calls
         if (in_array($method, static::$methodAllowed)) {
+            $manager = new RelationManager(static::$relationStore);
+
             return $manager->$method(...array_merge([$this], $parameters));
         }
 
