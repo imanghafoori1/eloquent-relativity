@@ -26,16 +26,11 @@ trait DynamicRelations
     /**
      * @var RelationStore
      */
-    protected static $relationStore;
+    protected static $dynamicRelations;
 
-    /**
-     * retrieve a new instance of the store
-     *
-     * @return RelationStore
-     */
-    public function newRelationStoreClass(): RelationStore
+    public static function bootDynamicRelations()
     {
-        return new RelationStore();
+        static::$dynamicRelations = new RelationStore();
     }
 
     /**
@@ -49,19 +44,15 @@ trait DynamicRelations
      */
     public function __call($method, $parameters)
     {
-        if (empty(static::$relationStore)) {
-            static::$relationStore = $this->newRelationStoreClass();
-        }
-
         // Handle internal calls
         if (in_array($method, static::$methodAllowed)) {
-            $manager = new RelationManager(static::$relationStore);
+            $manager = new RelationManager(static::$dynamicRelations);
 
             return $manager->$method(...array_merge([$this], $parameters));
         }
 
         // Handle relationships
-        $dynamicRelation = static::$relationStore->get($this, $method);
+        $dynamicRelation = static::$dynamicRelations->get($this, $method);
 
         if ($dynamicRelation) {
             return call_user_func_array($dynamicRelation->bindTo($this, static::class), $parameters);
