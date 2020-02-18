@@ -108,7 +108,7 @@ class PolymorphicRelationsTest extends TestCase
             $table->increments('id');
             $table->unsignedInteger('tag_id');
             $table->unsignedInteger('taggable_id');
-            $table->string('taggable_type', 20);
+            $table->string('taggable_type', 60);
         });
     }
 
