@@ -4,6 +4,7 @@ namespace Imanghafoori\Relativity;
 
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class RelationStore
 {
@@ -27,6 +28,19 @@ class RelationStore
     }
 
     /**
+     * Retrieve key
+     *
+     * @param Model $model
+     * @param string $key
+     *
+     * @return string
+     */
+    public function getKey(Model $model, $key)
+    {
+    	return $key;
+    }
+
+    /**
      * Retrieve a relation.
      *
      * @param Model $model
@@ -37,7 +51,7 @@ class RelationStore
      */
     public function get(Model $model, $key, $default = null)
     {
-        return $this->relations[$key] ?? $default;
+        return Arr::get($this->relations, $this->getKey($model, $key), $default);
     }
 
     /**
@@ -49,7 +63,7 @@ class RelationStore
      */
     public function set(Model $model, $key, $value)
     {
-        $this->relations[$key] = $value;
+        Arr::set($this->relations, $this->getKey($model, $key), $value);
     }
 
     /**
@@ -63,7 +77,7 @@ class RelationStore
      */
     public function has(Model $model, $key)
     {
-        return isset($this->relations[$key]);
+        return Arr::has($this->relations, $this->getKey($model, $key));
     }
 
     /**
@@ -74,6 +88,6 @@ class RelationStore
      */
     public function unset(Model $model, $key)
     {
-        unset($this->relations[$key]);
+        Arr::forget($this->relations, $this->getKey($model, $key));
     }
 }
