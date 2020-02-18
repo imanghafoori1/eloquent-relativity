@@ -24,6 +24,6 @@ class AbstractRelation
     {
         [$relationType, $model, $relationName, $data] = $this->relationData;
 
-        $model::defineRelation($relationType, $relationName, $data, $this->constraints);
+        $model->defineRelation($relationType, $relationName, $data, $this->constraints);
     }
 }
