@@ -150,7 +150,7 @@ class RelationManager
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function belongs_to(Model $model, $relationName, string $related, $foreignKey = null, $ownerKey = null)
+    public function belongs_to(Model $model, $relationName, $related, $foreignKey = null, $ownerKey = null)
     {
         if (is_null($foreignKey)) {
             $foreignKey = Str::snake($relationName).'_id';
