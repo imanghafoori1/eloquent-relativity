@@ -15,6 +15,11 @@ trait DynamicRelations
         return static::$dynamicRelations;
     }
 
+    public static function defineNewMethod($name, $closure)
+    {
+        static::$dynamicRelations[$name] = $closure;
+    }
+
     public function hasDynamicRelation(string $relation)
     {
         return isset(static::$dynamicRelations[$relation]);
