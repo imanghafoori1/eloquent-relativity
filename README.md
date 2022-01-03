@@ -2,6 +2,10 @@
 
 This allows you to decouple your eloquent models from one another, by defining relations dynamically at run-time.
 
+### Note that this package is not needed in laravel 7.x or above.
+Read more: 
+https://laravel.com/docs/7.x/eloquent-relationships#dynamic-relationships
+
    <img width="600px" src="https://user-images.githubusercontent.com/6961695/57988296-be261180-7aa1-11e9-9e28-645ab0da75dd.png" alt="widgetize_header"></img>
 
 [![Build Status](https://travis-ci.org/imanghafoori1/eloquent-relativity.svg?branch=master)](https://travis-ci.org/imanghafoori1/eloquent-relativity)
